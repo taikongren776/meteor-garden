@@ -1,0 +1,15 @@
+import * as THREE from 'three';
+import { rng } from './assets.js';
+
+// Small locally generated surface maps: no network assets or image placeholders.
+export function dressMaterials(m){
+  const random=rng(175);
+  function texture(draw,repeat){const canvas=document.createElement('canvas');canvas.width=canvas.height=512;const c=canvas.getContext('2d');draw(c);const t=new THREE.CanvasTexture(canvas);t.colorSpace=THREE.SRGBColorSpace;t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(repeat,repeat);t.anisotropy=4;return t;}
+  m.grass.map=texture(c=>{c.fillStyle='#b4cbb3';c.fillRect(0,0,512,512);for(let i=0;i<14000;i++){const v=120+Math.floor(random()*100);c.strokeStyle=`rgba(${v},${v+20},${v},.35)`;const x=random()*512,y=random()*512;c.beginPath();c.moveTo(x,y);c.lineTo(x+random()*3-1,y-3-random()*5);c.stroke();}},45);m.grass.color.set(0x24684f);
+  m.stone.map=texture(c=>{c.fillStyle='#ece7e5';c.fillRect(0,0,512,512);for(let i=0;i<220;i++){c.strokeStyle=`rgba(107,98,137,${.01+random()*.06})`;c.lineWidth=.5+random()*1.5;c.beginPath();let x=random()*512,y=random()*512;c.moveTo(x,y);for(let j=0;j<6;j++){x+=random()*75;y+=random()*55;c.lineTo(x,y);}c.stroke();}for(let i=0;i<9000;i++){c.fillStyle=random()>.5?'#ffffff12':'#55556608';c.fillRect(random()*512,random()*512,1,1);}},2);m.stone.roughness=.55;
+  m.wood.map=texture(c=>{c.fillStyle='#cba68b';c.fillRect(0,0,512,512);for(let i=0;i<600;i++){c.strokeStyle=`rgba(69,36,31,${random()*.2})`;c.beginPath();const y=random()*512;c.moveTo(0,y);c.bezierCurveTo(150,y+random()*6,350,y-random()*6,512,y);c.stroke();}},3);
+  m.petal.map=texture(c=>{c.fillStyle='#d98cba';c.fillRect(0,0,512,512);for(let i=0;i<1300;i++){const x=random()*512,y=random()*512,r=2+random()*6;c.fillStyle=['#ffcee8','#f49acb','#ffdced','#dd71b4'][Math.floor(random()*4)];for(let j=0;j<5;j++){const a=j*Math.PI*2/5;c.beginPath();c.ellipse(x+Math.cos(a)*r*.55,y+Math.sin(a)*r*.55,r*.55,r*.35,a,0,Math.PI*2);c.fill();}c.fillStyle='#ffefd0';c.beginPath();c.arc(x,y,r*.18,0,Math.PI*2);c.fill();}},2);m.petal.bumpMap=m.petal.map;m.petal.bumpScale=.07;m.petal.roughness=.85;
+  m.leaf.map=texture(c=>{c.fillStyle='#97bb9d';c.fillRect(0,0,512,512);for(let i=0;i<1800;i++){c.fillStyle=random()>.5?'#e2e8ca60':'#31594344';c.beginPath();c.ellipse(random()*512,random()*512,3+random()*7,2+random()*3,random()*6,0,Math.PI*2);c.fill();}},2);
+  const waterTime={value:0};m.water.onBeforeCompile=shader=>{shader.uniforms.uWaterTime=waterTime;shader.vertexShader='varying vec3 vWaterWorld;\n'+shader.vertexShader;shader.vertexShader=shader.vertexShader.replace('#include <worldpos_vertex>','#include <worldpos_vertex>\nvWaterWorld=(modelMatrix*vec4(transformed,1.)).xyz;');shader.fragmentShader='varying vec3 vWaterWorld;uniform float uWaterTime;\n'+shader.fragmentShader;shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>','#include <color_fragment>\nfloat ripple=sin(vWaterWorld.x*2.+sin(vWaterWorld.z*.8+uWaterTime)*1.2+uWaterTime*1.5)*sin(vWaterWorld.z*1.7-uWaterTime);diffuseColor.rgb+=pow(max(0.,ripple),12.)*vec3(.18,.45,.39);');};
+  return t=>waterTime.value=t;
+}

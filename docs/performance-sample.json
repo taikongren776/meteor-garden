@@ -1,0 +1,17 @@
+{
+  "engine": "three.js r180",
+  "flowers": "7430",
+  "fps": "240",
+  "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 Laptop GPU (0x00002D59) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "mode": "third-walk",
+  "position": "[3,0,45]",
+  "ready": "true",
+  "region": "heart",
+  "renderMs": "0.9",
+  "trees": "175",
+  "triangles": "2768558",
+  "viewport": [
+    1920,
+    1080
+  ]
+}

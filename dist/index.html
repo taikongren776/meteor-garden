@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b1532" />
+    <meta name="description" content="流星花园 — 在六座星空秘境之间自由漫游。一个可步行、可飞行的 Three.js 幻想花园。" />
+    <title>流星花园 · Meteor Garden</title>
+    <script type="module" crossorigin src="/assets/index-CuH6EAaZ.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CY9qr9Yp.css">
+  </head>
+  <body>
+    <canvas id="world" aria-label="流星花园三维场景，使用 WASD 移动，V 切换视角，F 切换飞行"></canvas>
+    <div id="loading"><div class="loading-star">✧</div><p>METEOR GARDEN</p><h1>让星光，落入花园。</h1><span id="load-message">正在点亮星辰与花海…</span><div class="loading-line"></div></div>
+    <main id="interface">
+      <header class="masthead"><a class="brand" href="#" aria-label="返回花园入口"><span class="brand-mark">✧</span><span><strong>流星花园</strong><small>METEOR GARDEN</small></span></a><div class="header-rule"></div><span class="edition">一座可以漫游的星空秘境</span></header>
+      <div class="top-right"><span class="live-dot"></span><span id="sky-label">星夜漫游</span><span class="divider">/</span><span id="clock-label">21:00</span><button id="help-button" class="icon-button" title="操作指南" aria-label="打开操作指南">?</button><button id="hide-ui" class="icon-button" title="隐藏界面 · H" aria-label="隐藏界面">⌗</button></div>
+      <section class="place-card"><div class="eyebrow"><span id="region-index">01</span><i></i><span>THE CELESTIAL GARDENS</span></div><h1 id="region-title">星愿花庭</h1><p id="region-description">把愿望交给星辰，让美好在此发生。</p><div class="place-tags"><span id="region-tag">✦ 星核喷泉</span><span>自由探索</span></div></section>
+      <section class="map-panel" aria-label="区域地图"><div class="map-heading"><span>花园星图</span><small>点击地标 · 即刻抵达</small></div><div class="minimap"><svg viewBox="0 0 200 170" aria-hidden="true"><ellipse cx="100" cy="95" rx="77" ry="57"/><path d="M100 149 L100 88 L30 93 M100 88 L165 102 M100 88 L111 35 M100 88 L48 42 M48 42 Q100 5 149 28 M30 93 Q37 146 100 149 Q174 145 165 102 Q165 45 111 35 Q68 20 48 42Z"/></svg><div id="map-points"></div><span id="map-player" title="当前位置"></span><span class="map-north">N</span></div><div class="map-footer"><span id="coordinates">00° N / 00° E</span><span id="mode-label">步行探索</span></div></section>
+      <div id="interaction-prompt" class="interaction-prompt" hidden><kbd>E</kbd><span id="interaction-label"></span><button id="interact-button">触发</button></div>
+      <div id="toast" role="status" aria-live="polite"></div><div id="crosshair" hidden>·</div>
+      <footer class="bottom-dock"><div class="dock-intro"><span class="compass-icon">✥</span><div><strong>循光而行</strong><small>EVERY PATH LEADS TO WONDER</small></div></div><div class="dock-controls"><button id="view-button"><span>◉</span><b>第三人称</b><kbd>V</kbd></button><button id="fly-button"><span>♧</span><b>开启飞行</b><kbd>F</kbd></button><button id="tour-button"><span>◎</span><b>全景俯瞰</b></button><button id="meteor-button"><span>☄</span><b>许愿流星</b></button><button id="settings-button" class="settings-trigger" aria-label="场景设置"><span>☷</span></button></div><div class="key-hint"><span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 移动</span><span>拖动鼠标环顾 · 点击场景锁定</span></div></footer>
+      <div class="corner-note">✧ &nbsp; 抬头，下一颗流星正在赴约。</div>
+    </main>
+    <button id="restore-ui" hidden>显示界面 · H</button>
+    <dialog id="help-dialog"><button class="dialog-close" aria-label="关闭">×</button><div class="eyebrow">A LITTLE GUIDE TO WONDER</div><h2>出发，去追一颗流星。</h2><p>点击画面锁定鼠标，自由环顾；也可以按住鼠标拖动观察。</p><div class="help-grid"><span>行走 / 飞行移动</span><b>W A S D</b><span>加速</span><b>Shift</b><span>跳跃 / 飞行上升</span><b>Space</b><span>飞行下降</span><b>Ctrl</b><span>切换第一 / 第三人称</span><b>V</b><span>开启 / 关闭飞行</span><b>F</b><span>与附近地标互动</span><b>E</b><span>返回入口 / 隐藏界面</span><b>R / H</b><span>释放鼠标 / 打开菜单</span><b>Esc</b></div><p class="dialog-note">点击花园星图可以直达六个区域。浮岛也可以自由飞行抵达。</p><button class="primary dialog-close-action">开始我的旅程 <span>↗</span></button></dialog>
+    <dialog id="settings-dialog"><button class="dialog-close" aria-label="关闭">×</button><div class="eyebrow">THE WORLD, AT YOUR PACE</div><h2>留住喜欢的时刻。</h2><label class="setting-row">画面品质<select id="quality"><option value="low">轻盈 · 低</option><option value="medium" selected>均衡 · 中</option><option value="high">精致 · 高</option></select></label><label class="setting-row">天空时刻<span id="time-value">星夜</span></label><input id="time-slider" aria-label="天空时刻" type="range" min="0" max="1" step="0.001" value="0.42"/><div class="time-labels"><span>黄昏</span><span>星夜</span><span>黎明</span></div><label class="setting-row">时间流动<input id="time-running" type="checkbox" checked /></label><label class="setting-row">减少动态<input id="reduced-motion" type="checkbox" /></label><div class="performance"><span id="fps">正在测量帧率</span><span id="draw-calls"></span></div><p class="dialog-note">性能会随设备和窗口大小变化。低画质保留全部区域与交互。</p></dialog>
+  </body>
+</html>
